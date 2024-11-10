@@ -1,24 +1,27 @@
-package ru.practicum.shareit.request.dto;
+package ru.practicum.shareit.item;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
-import java.time.LocalDateTime;
 
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemRequestDto {
+public class Item {
 
     Long id;
     @NotBlank
+    String name;
+    @NotBlank
     String description;
     @NotNull
-    User requester;
+    Boolean available;
     @NotNull
-    @FutureOrPresent
-    LocalDateTime created;
+    User owner;
+    ItemRequest request;
 }
