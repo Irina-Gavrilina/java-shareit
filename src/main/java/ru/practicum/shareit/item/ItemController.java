@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import java.util.List;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @RestController
 @Slf4j
@@ -19,13 +20,13 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto createItem(@Valid @RequestBody ItemDto itemDto,
-                              @RequestHeader("X-Sharer-User-Id") long userId) {
+                              @RequestHeader(USER_ID_HEADER) long userId) {
         log.info("Получен запрос POST на создание вещи {}", itemDto);
         return itemService.createItem(itemDto, userId);
     }
 
     @GetMapping
-    public List<ItemDto> getAllItemsByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDto> getAllItemsByUserId(@RequestHeader(USER_ID_HEADER) long userId) {
         log.info("Поступил запрос GET на получение списка всех вещей пользователя");
         return itemService.getAllItemsByUserId(userId);
     }
@@ -44,7 +45,7 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@PathVariable("itemId") long itemId,
                               @RequestBody ItemDto newItemDto,
-                              @RequestHeader("X-Sharer-User-Id") long userId) {
+                              @RequestHeader(USER_ID_HEADER) long userId) {
         log.info("Получен запрос PATCH на редактирование вещи {}", newItemDto);
         return itemService.updateItem(itemId, newItemDto, userId);
     }
