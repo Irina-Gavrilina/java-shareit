@@ -9,28 +9,27 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserMapper {
 
-    public static UserDto toUserDto(User user) {
-        return UserDto.builder()
+    public static UserResponse toUserResponse(User user) {
+        return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .build();
     }
 
-    public static List<UserDto> toListOfUsersDto(List<User> users) {
+    public static List<UserResponse> toListOfUsersResponse(List<User> users) {
         if (users == null) {
             return new ArrayList<>();
         }
         return users.stream()
-                .map(UserMapper::toUserDto)
+                .map(UserMapper::toUserResponse)
                 .toList();
     }
 
-    public static User toUser(UserDto userDto) {
+    public static User toUser(CreateUserRequest request) {
         return User.builder()
-                .id(userDto.getId())
-                .name(userDto.getName())
-                .email(userDto.getEmail())
+                .name(request.getName())
+                .email(request.getEmail())
                 .build();
     }
 }

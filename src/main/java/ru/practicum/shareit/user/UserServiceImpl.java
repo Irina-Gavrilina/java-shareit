@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserMapper;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.user.dto.*;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -17,34 +17,41 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        User user = UserMapper.toUser(userDto);
-        return UserMapper.toUserDto(userRepository.createUser(user));
+    @Transactional
+    public UserResponse createUser(CreateUserRequest request) {
+        User user = userRepository.save(UserMapper.toUser(request));
+        return UserMapper.toUserResponse(user);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return UserMapper.toListOfUsersDto(userRepository.getAllUsers());
+    public List<UserResponse> getAllUsers() {
+        List<User> listOfAllUsers = userRepository.findAll();
+        return UserMapper.toListOfUsersResponse(listOfAllUsers);
     }
 
     @Override
-    public UserDto getUserById(long userId) {
-        Optional<User> optUser = userRepository.getUserById(userId);
-        if (optUser.isPresent()) {
-            return UserMapper.toUserDto(optUser.get());
+    public UserResponse getUserById(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(String.format(
+                "Пользователя с id = %d нет в базе", userId)));
+        return UserMapper.toUserResponse(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUser(long userId, UpdateUserRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(String.format(
+                "Пользователя с id = %d нет в базе", userId)));
+        if (request.hasName()) {
+            user.setName(request.getName());
         }
-        log.error("Пользователь с id = {} не найден", userId);
-        throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", userId));
-    }
-
-    @Override
-    public UserDto updateUser(long userId, UserDto newUserDto) {
-        User newUser = UserMapper.toUser(newUserDto);
-        return UserMapper.toUserDto(userRepository.updateUser(userId, newUser));
+        if (request.hasEmail()) {
+            user.setEmail(request.getEmail());
+        }
+        return UserMapper.toUserResponse(userRepository.save(user));
     }
 
     @Override
     public void deleteUserById(long userId) {
-        userRepository.deleteUserById(userId);
+        userRepository.deleteById(userId);
     }
 }
