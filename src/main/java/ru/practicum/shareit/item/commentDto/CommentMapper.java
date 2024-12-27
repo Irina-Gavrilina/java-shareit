@@ -8,7 +8,6 @@ import ru.practicum.shareit.user.User;
 import java.time.LocalDateTime;
 import static ru.practicum.shareit.constants.Constants.FORMATTER;
 
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentMapper {
 

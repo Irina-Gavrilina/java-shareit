@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.commentDto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
@@ -10,5 +11,6 @@ import lombok.*;
 public class CreateCommentRequest {
 
     @NotBlank
+    @Size(max = 512)
     private String text;
 }

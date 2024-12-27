@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.itemDto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +12,9 @@ import lombok.experimental.FieldDefaults;
 public class UpdateItemRequest {
 
     Long id;
+    @Size(max = 255)
     String name;
+    @Size(max = 512)
     String description;
     Boolean available;
 
