@@ -1,24 +1,49 @@
 package ru.practicum.shareit.request;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.User;
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Table(name = "requests")
+@Getter
+@Setter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemRequest {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     Long id;
-    @NotBlank
+
+    @Column(name = "description", nullable = false, length = 512)
     String description;
-    @NotBlank
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requester_id", nullable = false)
+    @ToString.Exclude
     User requester;
-    @NotNull
+
+    @Column(name = "created_at", nullable = false)
     @FutureOrPresent
     LocalDateTime created;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemRequest)) return false;
+        return id != null && id.equals(((ItemRequest) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

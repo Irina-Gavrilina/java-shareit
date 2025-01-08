@@ -1,17 +1,13 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.item;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "comments")
 @Getter
 @Setter
 @ToString
@@ -19,20 +15,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Booking {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     Long id;
 
-    @Column(name = "start_time", nullable = false)
-    @FutureOrPresent
-    LocalDateTime start;
-
-    @Column(name = "end_time", nullable = false)
-    @Future
-    LocalDateTime end;
+    @Column(name = "text", nullable = false, length = 512)
+    String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
@@ -40,19 +31,18 @@ public class Booking {
     Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booker_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     @ToString.Exclude
-    User booker;
+    User author;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    BookingStatus status;
+    @Column(name = "created_at", nullable = false)
+    LocalDateTime created;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Booking)) return false;
-        return id != null && id.equals(((Booking) o).getId());
+        if (!(o instanceof Comment)) return false;
+        return id != null && id.equals(((Comment) o).getId());
     }
 
     @Override

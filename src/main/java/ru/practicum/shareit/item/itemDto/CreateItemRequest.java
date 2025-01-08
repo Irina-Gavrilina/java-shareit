@@ -1,23 +1,24 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.item.itemDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemDto {
+public class CreateItemRequest {
 
-    Long id;
     @NotBlank
+    @Size(max = 255)
     String name;
     @NotBlank
+    @Size(max = 512)
     String description;
     @NotNull
     Boolean available;
-    Long request;
 }
