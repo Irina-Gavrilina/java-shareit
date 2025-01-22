@@ -9,7 +9,7 @@ services:
       - server
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
-
+    restart: on-failure
   server:
     build: server
     image: shareit-server

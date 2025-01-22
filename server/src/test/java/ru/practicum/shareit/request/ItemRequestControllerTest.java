@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static ru.practicum.shareit.constants.Constants.FORMATTER;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @WebMvcTest(controllers = ItemRequestController.class)
 public class ItemRequestControllerTest {
@@ -49,7 +50,7 @@ public class ItemRequestControllerTest {
                         .content(mapper.writeValueAsString(itemRequestCreateDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", requester.getId())
+                        .header(USER_ID_HEADER, requester.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -72,7 +73,7 @@ public class ItemRequestControllerTest {
                 .thenReturn(List.of(itemRequestDtoWithItemInfo));
 
         mvc.perform(get("/requests", requester.getId())
-                        .header("X-Sharer-User-Id", requester.getId())
+                        .header(USER_ID_HEADER, requester.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -93,7 +94,7 @@ public class ItemRequestControllerTest {
                 .thenReturn(List.of(itemRequestDto));
 
         mvc.perform(get("/requests/all", requester.getId())
-                        .header("X-Sharer-User-Id", requester.getId())
+                        .header(USER_ID_HEADER, requester.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

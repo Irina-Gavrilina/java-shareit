@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.ErrorHandler;
 import ru.practicum.shareit.exception.ErrorResponse;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.item.ItemServiceImpl;
 import ru.practicum.shareit.item.itemDto.CreateItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
 import ru.practicum.shareit.user.User;
@@ -34,7 +33,6 @@ public class ItemRequestServiceIntegrationTest {
 
     final ItemRequestServiceImpl itemRequestService;
     final UserServiceImpl userService;
-    final ItemServiceImpl itemService;
     final EntityManager em;
 
     @Test

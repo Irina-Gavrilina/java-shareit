@@ -16,6 +16,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @WebMvcTest(controllers = ItemRequestController.class)
 public class ItemRequestControllerTest {
@@ -36,7 +37,7 @@ public class ItemRequestControllerTest {
         mvc.perform(MockMvcRequestBuilders.post("/requests")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", "1")
+                        .header(USER_ID_HEADER, "1")
                         .content(mapper.writeValueAsString(itemRequestCreateDto)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.error", is("Произошла непредвиденная ошибка")));

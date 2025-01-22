@@ -17,6 +17,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @WebMvcTest(controllers = ItemController.class)
 public class ItemControllerTest {
@@ -36,7 +37,7 @@ public class ItemControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/items")
                         .content(mapper.writeValueAsString(createItemRequest))
-                        .header("X-Sharer-User-Id", "1")
+                        .header(USER_ID_HEADER, "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
@@ -51,7 +52,7 @@ public class ItemControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/items")
                         .content(mapper.writeValueAsString(createItemRequest))
-                        .header("X-Sharer-User-Id", "1")
+                        .header(USER_ID_HEADER, "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
@@ -66,7 +67,7 @@ public class ItemControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/items")
                         .content(mapper.writeValueAsString(createItemRequest))
-                        .header("X-Sharer-User-Id", "1")
+                        .header(USER_ID_HEADER, "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
@@ -81,7 +82,7 @@ public class ItemControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/items/{itemId}/comment", 1L)
                         .content(mapper.writeValueAsString(createCommentRequest))
-                        .header("X-Sharer-User-Id", String.valueOf(1L))
+                        .header(USER_ID_HEADER, String.valueOf(1L))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())

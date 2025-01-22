@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static ru.practicum.shareit.constants.Constants.FORMATTER;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @WebMvcTest(controllers = ItemController.class)
 public class ItemControllerTest {
@@ -51,7 +52,7 @@ public class ItemControllerTest {
                         .content(mapper.writeValueAsString(createItemRequest))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", user.getId())
+                        .header(USER_ID_HEADER, user.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -77,7 +78,7 @@ public class ItemControllerTest {
                 .thenReturn(List.of(firstItemInfoResponse, secondItemInfoResponse));
 
         mvc.perform(get("/items", owner.getId())
-                        .header("X-Sharer-User-Id", owner.getId()))
+                        .header(USER_ID_HEADER, owner.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -150,7 +151,7 @@ public class ItemControllerTest {
                         .content(mapper.writeValueAsString(updateItemRequest))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", owner.getId())
+                        .header(USER_ID_HEADER, owner.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -194,7 +195,7 @@ public class ItemControllerTest {
                         .content(mapper.writeValueAsString(createCommentRequest))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", booker.getId())
+                        .header(USER_ID_HEADER, booker.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

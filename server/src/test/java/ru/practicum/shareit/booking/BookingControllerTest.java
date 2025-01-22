@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static ru.practicum.shareit.constants.Constants.FORMATTER;
+import static ru.practicum.shareit.constants.Constants.USER_ID_HEADER;
 
 @WebMvcTest(controllers = BookingController.class)
 public class BookingControllerTest {
@@ -70,7 +71,7 @@ public class BookingControllerTest {
                         .content(mapper.writeValueAsString(createBookingRequest))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", booker.getId())
+                        .header(USER_ID_HEADER, booker.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -104,7 +105,7 @@ public class BookingControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("approved", String.valueOf(approveBookingRequest.getApproved()))
-                        .header("X-Sharer-User-Id", owner.getId())
+                        .header(USER_ID_HEADER, owner.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -129,7 +130,7 @@ public class BookingControllerTest {
                 .thenReturn(bookingResponse);
 
         mvc.perform(get("/bookings/{bookingId}", booking.getId())
-                        .header("X-Sharer-User-Id", booker.getId()))
+                        .header(USER_ID_HEADER, booker.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(bookingResponse.getId()), Long.class))
@@ -154,7 +155,7 @@ public class BookingControllerTest {
 
         mvc.perform(get("/bookings")
                         .param("state", String.valueOf(BookingState.CURRENT))
-                        .header("X-Sharer-User-Id", booker.getId()))
+                        .header(USER_ID_HEADER, booker.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id", is(bookingResponse.getId()), Long.class))
@@ -179,7 +180,7 @@ public class BookingControllerTest {
 
         mvc.perform(get("/bookings/owner")
                         .param("state", String.valueOf(BookingState.CURRENT))
-                        .header("X-Sharer-User-Id", owner.getId()))
+                        .header(USER_ID_HEADER, owner.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id", is(bookingResponse.getId()), Long.class))
